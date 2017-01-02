@@ -2,6 +2,8 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var keywords = require('./keywords');
 var careinstr = require('./careinstructions');
+const DarkSky = require('dark-sky');
+const forecast = new DarkSky('850aa0e4eb50e64d2ff8975f86534805');
 
 //=========================================================
 // Bot Setup
@@ -148,8 +150,29 @@ bot.beginDialogAction("quiz", "/quiz");
 bot.dialog('/checkweather', [
     function (session, args, next) {
         // Add API call to weather
-        
-        session.endDialog("I just checked the weather forecast and it looks like it's going to be raining an hour from now. The next best time to do it is tomorrow at 11am if you want to dry your clothes outside.");
+        forecast
+            .latitude('1.3521')            
+            .longitude('103.8198')          
+            .units('ca')                    
+            .language('en')                 
+            .exclude('currently,minutely,daily,alerts,flags')     
+            .get()                        
+            .then(res => {              
+                //successful request
+                session.send("Weather forecast: " + res.hourly.summary);
+                if (res.hourly.icon === "rain"){
+                    session.endDialog("I don't suggest you wash your clothes today unless you have a dryer.");
+                } else if (res.hourly.icon === "clear-day" || res.hourly.icon=== "partly-cloudy-day" || res.hourly.icon === "wind"){
+                    session.endDialog("It should be all good for you to do your laundry today.");
+                } else if (res.hourly.icon === "cloudy"){
+                    session.endDialog("Hmm... your clothes may take a while to dry outside. I'd probably pick another day to do laundry if I were you.");
+                } else {
+                    session.endDialog("I'd probably pick another day to do laundry if I were you.");
+                }
+            })
+            .catch(err => {               
+                console.log(err)
+            });
     }
 ]);
 

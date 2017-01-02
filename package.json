@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "botbuilder": "^3.4.4",
+    "dark-sky": "^1.0.10",
     "restify": "^4.3.0"
   }
 }
