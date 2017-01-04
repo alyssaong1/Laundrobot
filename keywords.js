@@ -34,6 +34,6 @@ function matchWithin(words){
 
 module.exports = {
     hi: matchExact(["hi", "hey", "hello", "yo", "what's up"]),
-    start: matchExact(["start", "get started"]),
+    start: matchExact(["start", "get started", "begin"]),
     menu: matchExact(["menu"])
 }

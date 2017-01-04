@@ -5,6 +5,24 @@ var careinstr = require('./careinstructions');
 const DarkSky = require('dark-sky');
 const forecast = new DarkSky('850aa0e4eb50e64d2ff8975f86534805');
 
+// Azure SQL connector
+var Connection = require('tedious').Connection;
+var Request = require('tedious').Request;  
+var TYPES = require('tedious').TYPES;
+var config = {
+    userName: 'laundrobotsql',
+    password: 'Laundrobot123$',
+    server: 'laundrobotsql.database.windows.net',
+    // When you connect to Azure SQL Database, you need these next options.
+    options: {encrypt: true, database: 'laundrobotdb'}
+};
+// connection.on('connect', function(err) {
+//     console.log("connected");
+//     if (err){
+//         console.log(err);
+//     }
+// });
+
 //=========================================================
 // Bot Setup
 //=========================================================
@@ -45,6 +63,8 @@ intents.matches(keywords.hi, '/sayHi')
     .matches('checkweather', '/checkweather')
     .matches('recommend', '/productRec')
     .matches('whatabout', '/whatabout')
+    .matches('startwashing', '/menu')
+    .matches('didwashing', '/didwashing')
     .onDefault(builder.DialogAction.send("Hmm I'm not too sure what you're trying to say. Type 'help' to see what I can do."));
 
 bot.dialog('/whatabout', [
@@ -57,7 +77,7 @@ bot.dialog('/whatabout', [
                 session.beginDialog('/productRec', args);
             }
         } else {
-            session.endDialog("Sorry, not too sure what you're trying to say.");
+            session.endDialog("I've got nothing else.");
         }
     }
 ]);
@@ -67,8 +87,6 @@ bot.dialog('/sayHi', [
         session.send("Hey, nice to meet you :) I'm Laundrobot and I help with your laundry needs.");
         session.sendTyping();
         session.send("If you don't separate your clothes out, or use the proper type and amount of detergent, you may be damaging your clothes. Worse still, they may look clean but not actually be clean.");
-        session.sendTyping();
-        session.send("The laundry quiz is where we go through your current laundry habits and I'll see how it can be improved. I highly recommend you take this beforehand. Otherwise, let's start doing your laundry!");
         session.beginDialog('/menu');
     }
 ]);
@@ -77,7 +95,7 @@ bot.dialog('/howtocare', [
     function (session,args,next){
         console.log(args);
         if (args.entities.length < 1 || args.entities[0].type !== 'clothing::material'){
-            builder.Prompts.text(session, "What material do you want to wash? (say quit to exit)");
+            builder.Prompts.text(session, "What material is the clothing? (say quit to exit)");
         } else {
             next({response: args.entities[0].entity});
         }
@@ -129,14 +147,15 @@ bot.dialog('/menu', [
             .attachments([
                 new builder.HeroCard(session)
                     .title("Main Menu")
-                    .subtitle("What would you like to do next?")
+                    .subtitle("What would you like find out about?")
                     .images([
                         //Using this image: http://imgur.com/a/vl59A
                         builder.CardImage.create(session, "https://d13yacurqjgara.cloudfront.net/users/97445/screenshots/1374460/washing-machine-flat-icon.png")
                     ])
                     .buttons([
-                        builder.CardAction.dialogAction(session, "checkweather", null, "Start doing laundry"),
-                        builder.CardAction.dialogAction(session, "quiz", null, "Take laundry quiz")
+                        builder.CardAction.dialogAction(session, "checkweather", null, "Should I do laundry now?"),
+                        builder.CardAction.dialogAction(session, "howtocare", null, "Care instructions"),
+                        builder.CardAction.dialogAction(session, "separatelaundry", null, "How to separate laundry?")
                     ])
             ]);
         session.endDialog(msg);
@@ -144,14 +163,23 @@ bot.dialog('/menu', [
 ]);
 
 // These "link" the menu buttons to the dialogs
+bot.beginDialogAction("howtocare", '/howtocare');
 bot.beginDialogAction("checkweather", "/checkweather");
 bot.beginDialogAction("quiz", "/quiz");
+bot.beginDialogAction("separatelaundry", '/separatelaundry')
+
+bot.dialog('/separatelaundry', [
+    function (session,args,next){
+        session.send("I recommend the following separation: Jeans, coloured clothes, white clothes, baby clothes, wool, delicates.");
+        session.endDialog("But you should also read the tag on each of the clothing and separate as appropriate.");
+    }
+]);
 
 bot.dialog('/checkweather', [
     function (session, args, next) {
         // Add API call to weather
         forecast
-            .latitude('1.3521')            
+            .latitude('1.3521')            // set to singapore
             .longitude('103.8198')          
             .units('ca')                    
             .language('en')                 
@@ -254,6 +282,11 @@ bot.dialog('/productRec', [
                     case 'linen':
                         session.send("I highly recommend you dry clean linen.");
                         break;
+                    case 'stain':
+                    case 'stains':
+                        session.send("For hard to remove stains you can use this:");
+                        cards.push(careinstr.stains.rec(session));
+                        break;
                     default:
                         session.send("For " + type + " I recommend the following: ");
                         cards.push(careinstr.whites.rec(session));
@@ -315,3 +348,55 @@ bot.dialog('/setTimer', [
         session.endDialog("Cool, I will ping you when it's time to take out your laundry.");
     }
 ]);
+
+bot.dialog('/didwashing', [
+    function (session,args,next){
+        if (args.entities.length < 1){
+            builder.Prompts.choice(session, "Did you do a cold, warm or hot cycle?", "Cold|Warm|Hot|quit");
+        } else {
+            next({response: args.entities[0].entity});
+        }
+    }, function (session,results){
+        if (results.response && results.response !== 'quit'){
+            var temp;
+            if (results.response.entity){
+                temp = results.response.entity.toLowerCase();
+            } else {
+                temp = results.response.toLowerCase();
+            }
+            var connection = new Connection(config);
+            connection.on('connect', function(err) {
+                if (err) {
+                    console.log(err); // replace with your code
+                    session.endDialog("Uh oh something went wrong.");
+                    return;
+                };
+                console.log("hello");
+                // If no error, then good to proceed.
+                var request = new Request("INSERT dbo.laundrydata (Date, Temp, Type, Cups) OUTPUT INSERTED.Id VALUES (CURRENT_TIMESTAMP, @Temp, @Type, @Cups);", function(err) {  
+                if (err) {  
+                    console.log(err);}  
+                });  
+                request.addParameter('Temp', TYPES.NVarChar,temp);  
+                request.addParameter('Type', TYPES.NVarChar, null);
+                request.addParameter('Cups', TYPES.NVarChar, null);      
+                connection.execSql(request);
+                session.endDialog("Got it. Visit your dashboard for updated analytics.");
+            });
+        } else {
+            session.endDialog("Ok");
+        }
+        // session.endDialog("Got it. Visit your dashboard for updated analytics.");
+    }
+]);
+
+ function insertWashing(connection,temp){  
+        var request = new Request("INSERT dbo.laundrydata (Date, Temp, Type, Cups) OUTPUT INSERTED.Id VALUES (CURRENT_TIMESTAMP, @Temp, @Type, @Cups);", function(err) {  
+         if (err) {  
+            console.log(err);}  
+        });  
+        request.addParameter('Temp', TYPES.NVarChar,temp);  
+        request.addParameter('Type', TYPES.NVarChar, null);
+        request.addParameter('Cups', TYPES.NVarChar, null);      
+        connection.execSql(request);
+}
