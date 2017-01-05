@@ -65,6 +65,7 @@ intents.matches(keywords.hi, '/sayHi')
     .matches('whatabout', '/whatabout')
     .matches('startwashing', '/menu')
     .matches('didwashing', '/didwashing')
+    .matches('separation', '/separatelaundry')
     .onDefault(builder.DialogAction.send("Hmm I'm not too sure what you're trying to say. Type 'help' to see what I can do."));
 
 bot.dialog('/whatabout', [
