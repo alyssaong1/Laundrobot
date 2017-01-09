@@ -2,6 +2,7 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var keywords = require('./keywords');
 var careinstr = require('./careinstructions');
+var rp = require('request-promise');
 const DarkSky = require('dark-sky');
 const forecast = new DarkSky('850aa0e4eb50e64d2ff8975f86534805');
 
@@ -14,7 +15,7 @@ var config = {
     password: 'Laundrobot123$',
     server: 'laundrobotsql.database.windows.net',
     // When you connect to Azure SQL Database, you need these next options.
-    options: {encrypt: true, database: 'laundrobotdb'}
+    options: {encrypt: true, database: 'laundrobotdb',rowCollectionOnDone: true}
 };
 // connection.on('connect', function(err) {
 //     console.log("connected");
@@ -86,8 +87,8 @@ bot.dialog('/whatabout', [
 bot.dialog('/sayHi', [
     function (session, args, next){
         session.send("Hey, nice to meet you :) I'm Laundrobot and I help with your laundry needs.");
-        session.sendTyping();
-        session.send("If you don't separate your clothes out, or use the proper type and amount of detergent, you may be damaging your clothes. Worse still, they may look clean but not actually be clean.");
+        // session.sendTyping();
+        // session.send("If you don't separate your clothes out, or use the proper type and amount of detergent, you may be damaging your clothes. Worse still, they may look clean but not actually be clean.");
         session.beginDialog('/menu');
     }
 ]);
@@ -154,9 +155,9 @@ bot.dialog('/menu', [
                         builder.CardImage.create(session, "https://d13yacurqjgara.cloudfront.net/users/97445/screenshots/1374460/washing-machine-flat-icon.png")
                     ])
                     .buttons([
-                        builder.CardAction.dialogAction(session, "checkweather", null, "Should I do laundry now?"),
+                        builder.CardAction.dialogAction(session, "checkweather", null, "Check weather"),
                         builder.CardAction.dialogAction(session, "howtocare", null, "Care instructions"),
-                        builder.CardAction.dialogAction(session, "separatelaundry", null, "How to separate laundry?")
+                        builder.CardAction.dialogAction(session, "separatelaundry", null, "Laundry separation")
                     ])
             ]);
         session.endDialog(msg);
@@ -382,7 +383,7 @@ bot.dialog('/didwashing', [
                 request.addParameter('Type', TYPES.NVarChar, null);
                 request.addParameter('Cups', TYPES.NVarChar, null);      
                 connection.execSql(request);
-                session.endDialog("Got it. Visit your dashboard for updated analytics.");
+                session.endDialog("Got it. You can check your updated dashboard in 15 mins time.");
             });
         } else {
             session.endDialog("Ok");
@@ -401,3 +402,60 @@ bot.dialog('/didwashing', [
         request.addParameter('Cups', TYPES.NVarChar, null);      
         connection.execSql(request);
 }
+
+//Not used, but to send to streaming dataset
+function sendToPowerBI(cb) {  
+    var connection = new Connection(config);
+     connection.on('connect', function(err) {
+         console.log("connected");
+                if (err) {
+                    console.log(err); // replace with your code
+                    session.endDialog("Uh oh something went wrong.");
+                    return;
+                };
+            var request = new Request("SELECT * FROM dbo.laundrydata;", function(err) {  
+            if (err) {  
+                console.log(err);}  
+            });  
+            var result = "";  
+
+    var resultObj = [];
+
+    request.on('doneInProc', function (rowCount, more, rows) {  
+        console.log(rows);
+        console.log(rowCount);
+        rows.forEach(function (element){
+                //process columns
+                var rowObj = {
+                    "Id": element[0].value,
+                    "Date": element[1].value,
+                    "Temp": ""+element[2].value,
+                    "Type": element[3].value,
+                    "Cups": element[4].value,
+                    "Month": element[5].value
+                }
+                resultObj.push(rowObj);
+        });
+        var url = "https://api.powerbi.com/beta/72f988bf-86f1-41af-91ab-2d7cd011db47/datasets/bf01d137-b079-43a1-b205-2aa00776a929/rows?key=rJWVtTP5TboxU7QtKYlFWQ7l3PLC50LWykHFIFsr9pD8LYwmDorn6PZ5%2F5iJkTABpOMC6xzsWOD7zmmQK3jKXw%3D%3D";
+            //Options for the request
+            var options = {
+                uri: url,
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                json: true,
+                body: resultObj
+            }
+            //Make the request
+            rp(options).then(function (body){
+                console.log(body);
+            }).catch(function (err){
+                console.log(err.message);
+            }).finally(function () {
+                cb(); 
+            });
+    });  
+            connection.execSql(request);
+        });
+} 
