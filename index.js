@@ -50,7 +50,7 @@ server.post('/api/messages', connector.listen());
 // This Url can be obtained by uploading or creating your model from the LUIS portal: https://www.luis.ai/
 
 const LuisModelUrl = process.env.LUIS_MODEL_URL ||
-    'https://api.projectoxford.ai/luis/v2.0/apps/8a2d9c33-8d37-4dc0-8c79-6226d194a55e?subscription-key=000203ecdc4d490a81afdfe8c6adec96&verbose=true';
+    'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/8a2d9c33-8d37-4dc0-8c79-6226d194a55e?subscription-key=46f95c6c555b485a8be366adb055f599&timezoneOffset=0&verbose=true&q=';
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
