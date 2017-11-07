@@ -11,18 +11,12 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;  
 var TYPES = require('tedious').TYPES;
 var config = {
-    userName: 'laundrobotsql',
-    password: 'Laundrobot123$',
-    server: 'laundrobotsql.database.windows.net',
+    userName: 'YOUR SQL DB USERNAME',
+    password: 'YOUR SQL DB PASSWORD',
+    server: 'YOUR SQL DB SERVER URL',
     // When you connect to Azure SQL Database, you need these next options.
-    options: {encrypt: true, database: 'laundrobotdb',rowCollectionOnDone: true}
+    options: {encrypt: true, database: 'YOUR SQL DB NAME'}
 };
-// connection.on('connect', function(err) {
-//     console.log("connected");
-//     if (err){
-//         console.log(err);
-//     }
-// });
 
 //=========================================================
 // Bot Setup
@@ -50,7 +44,7 @@ server.post('/api/messages', connector.listen());
 // This Url can be obtained by uploading or creating your model from the LUIS portal: https://www.luis.ai/
 
 const LuisModelUrl = process.env.LUIS_MODEL_URL ||
-    'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/8a2d9c33-8d37-4dc0-8c79-6226d194a55e?subscription-key=46f95c6c555b485a8be366adb055f599&timezoneOffset=0&verbose=true&q=';
+    'your LUIS model url';
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -206,52 +200,6 @@ bot.dialog('/checkweather', [
     }
 ]);
 
-// bot.dialog('/doLaundry', [
-//     function (session, args, next){
-//         session.send("To start off, if you've got anything that's got hard stains, do a pre removal of these first. Use a stain remover like these ones:");
-//         msg = new builder.Message(session)
-//             .attachments([
-//                 new builder.HeroCard(session)
-//                     .title("Tide® to Go Instant Stain Remover")
-//                     .subtitle("Eliminate some of your toughest fresh food and drink stains on the go.")
-//                     .images([
-//                         //Using this image: http://imgur.com/a/vl59A
-//                         builder.CardImage.create(session, "http://istudio.pgpro.com/di/prod/1E7853C4-7481-43A7-9D3D-04FF3C8E5CBC/s/320x209/jq/90/o/th.jpg")
-//                     ])
-//                     .buttons([
-//                         builder.CardAction.openUrl(session, "http://pgpro.com/brands/tide/tide-to-go-instant-stain-remover/", "Buy online")
-//                     ]),
-//                 new builder.HeroCard(session)
-//                     .title("Tide® OXI Multi-Purpose Stain Remover")
-//                     .subtitle("Removes tough stains, with over 225 different stain removal uses including carpet, grout, tile, in the wash and more.")
-//                     .images([
-//                         //Using this image: http://imgur.com/a/vl59A
-//                         builder.CardImage.create(session, "http://istudio.pgpro.com/di/prod/fa79a1fe-ea8a-4c01-a777-72a73bce717b/s/320x209/jq/90/o/th.jpg")
-//                     ])
-//                     .buttons([
-//                         builder.CardAction.openUrl(session, "http://pgpro.com/brands/tide/tide-oxi-multi-purpose-stain-remover/", "Buy online")
-//                     ])
-//             ])
-//             .attachmentLayout(builder.AttachmentLayout.carousel);
-//         session.send(msg);
-//         builder.Prompts.choice(session, "", "Next|Quit");
-//     }, function (session, results, next){
-//         session.send("Let's separate your clothes for washing. Some things shouldn't be washed together.");
-//         session.send("I recommend the following separation: Jeans, coloured clothes, white clothes, baby clothes, delicates.");
-//         //use luis to detect
-//         session.send("Just tap next when you're done.");
-//         //Where do baby clothes go?
-//         builder.Prompts.choice(session, "", "Next|Quit");
-//     }, function (session,results,next){
-//         if (results.response && results.response.entity !== 'Quit') {
-//             builder.Prompts.text(session, "So how did you end up doing your separation? Please separate your categories with commas.");
-//         } else {
-//             session.endDialog("Ok.");
-//         }
-//     }, function (session,results,next){
-//         session.beginDialog('/productrec');
-//     }
-// ]);
 
 bot.beginDialogAction("productrec", "/productRec");
 
@@ -322,21 +270,6 @@ bot.dialog('/whyBabyPowder', [
         session.endDialog(careinstr.baby.why);
     }
 ]);
-
-// bot.dialog('/amount', [
-//     function (session,args,next){
-//         session.send("Do make sure you read the instructions on the box as to how much detergent to use. Too much can mean damaged clothes, and too little can mean dirty clothes.");
-//         session.send("Also remember to read the tag on the clothes to see how they should be washed.");
-//         builder.Prompts.choice(session,"", "Next|Quit");
-//     }, function (session,results,next){
-//         if (results.response && results.response.entity !== 'Quit') {
-//             session.beginDialog('/setTimer');
-//         } else {
-//             session.endDialog("Ok.");
-//         }
-//     }
-// ]);
-
 bot.dialog('/setTimer', [
     function (session,args,next){
         builder.Prompts.choice(session, "Want me to set a timer for your laundry?", "Yes|No");
@@ -436,7 +369,7 @@ function sendToPowerBI(cb) {
                 }
                 resultObj.push(rowObj);
         });
-        var url = "https://api.powerbi.com/beta/72f988bf-86f1-41af-91ab-2d7cd011db47/datasets/bf01d137-b079-43a1-b205-2aa00776a929/rows?key=rJWVtTP5TboxU7QtKYlFWQ7l3PLC50LWykHFIFsr9pD8LYwmDorn6PZ5%2F5iJkTABpOMC6xzsWOD7zmmQK3jKXw%3D%3D";
+        var url = "YOUR POWER BI URL";
             //Options for the request
             var options = {
                 uri: url,

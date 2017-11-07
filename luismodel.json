@@ -1,0 +1,1066 @@
+{
+  "luis_schema_version": "2.1.0",
+  "versionId": "0.1",
+  "name": "P&G demo",
+  "desc": "",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "checkweather"
+    },
+    {
+      "name": "didwashing"
+    },
+    {
+      "name": "howtocare"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "recommend"
+    },
+    {
+      "name": "separation"
+    },
+    {
+      "name": "startwashing"
+    },
+    {
+      "name": "whatabout"
+    }
+  ],
+  "entities": [
+    {
+      "name": "clothing",
+      "children": [
+        "material",
+        "type"
+      ]
+    },
+    {
+      "name": "RestaurantReservation.Address",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "Address"
+      }
+    },
+    {
+      "name": "RestaurantReservation.Amenities",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "Amenities"
+      }
+    },
+    {
+      "name": "RestaurantReservation.AppNme",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "AppNme"
+      }
+    },
+    {
+      "name": "RestaurantReservation.Atmosphere",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "Atmosphere"
+      }
+    },
+    {
+      "name": "RestaurantReservation.Cuisine",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "Cuisine"
+      }
+    },
+    {
+      "name": "RestaurantReservation.MealType",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "MealType"
+      }
+    },
+    {
+      "name": "RestaurantReservation.PlaceName",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "PlaceName"
+      }
+    },
+    {
+      "name": "RestaurantReservation.PlaceType",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "PlaceType"
+      }
+    },
+    {
+      "name": "RestaurantReservation.Rating",
+      "inherits": {
+        "domain_name": "RestaurantReservation",
+        "model_name": "Rating"
+      }
+    },
+    {
+      "name": "washing",
+      "children": [
+        "temp",
+        "setting"
+      ]
+    }
+  ],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities": [
+    "datetime"
+  ],
+  "actions": [
+    {
+      "actionName": "howtocare",
+      "intentName": "howtocare",
+      "channel": null,
+      "actionParameters": []
+    }
+  ],
+  "model_features": [
+    {
+      "name": "clothing",
+      "mode": true,
+      "words": "pants,jeans,trousers,shorts,shirt,shirts,tshirt,tshirts,blouse,blouses,skirt,skirts,dress,dresses,blanket,blankets,sheet,sheets,towel,towels,baby,colour,color,colourful,white,dark",
+      "activated": true
+    },
+    {
+      "name": "detergent",
+      "mode": true,
+      "words": "detergent,powder,liquid,soap",
+      "activated": true
+    },
+    {
+      "name": "instructions",
+      "mode": true,
+      "words": "instructions,care,how to,how do,guide,how",
+      "activated": true
+    },
+    {
+      "name": "material",
+      "mode": true,
+      "words": "cotton,linen,silk,wool,denim,corduroy,flannel",
+      "activated": true
+    },
+    {
+      "name": "recommend",
+      "mode": true,
+      "words": "recommendation,recommend,suggest,advise,advice,recommendations,use,using",
+      "activated": true
+    },
+    {
+      "name": "separate",
+      "mode": true,
+      "words": "separate,split,divide,separating,splitting,dividing,assign,assigning,group,grouping",
+      "activated": true
+    },
+    {
+      "name": "setting",
+      "mode": true,
+      "words": "heavy,regular,normal,delicates,delicate",
+      "activated": true
+    },
+    {
+      "name": "stains",
+      "mode": true,
+      "words": "stain,stains,grease,mud,dirt",
+      "activated": true
+    },
+    {
+      "name": "temp",
+      "mode": true,
+      "words": "warm,hot,cold",
+      "activated": true
+    }
+  ],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "the sky is blue",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "what is the weather like today",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "what's the weather?",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "ok",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "is it gonna rain",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "i was a $45 in tips yesterday i put $10 in for gas in my car my mom asked about $8 and i gave a friend of mine $6 how much money do i have left",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "cortana",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.AppNme",
+          "startPos": 0,
+          "endPos": 6
+        }
+      ]
+    },
+    {
+      "text": "let me tell me and let me tell you a story to tell you still be a boy named in and he fucked with a girl called eni didn't have a baby in here and safe baby and corrupt and have arrived yet and a half",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 130,
+          "endPos": 133
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 152,
+          "endPos": 155
+        }
+      ]
+    },
+    {
+      "text": "how do i wash cotton?",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 14,
+          "endPos": 19
+        }
+      ]
+    },
+    {
+      "text": "washing corduroy pants",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 8,
+          "endPos": 15
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 17,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "how do i wash my cotton pants",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 17,
+          "endPos": 22
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 24,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "i need to do groceries",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "how do i wash my silk dress?",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 17,
+          "endPos": 20
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 22,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "washing a denim skirt",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 10,
+          "endPos": 14
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 16,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "is it ok to wash my clothes now",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "can i do my washing now?",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "i want to do my laundry now",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "start laundry",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "instructions on washing cotton shirts",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 24,
+          "endPos": 29
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 31,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "care instructions",
+      "intent": "howtocare",
+      "entities": []
+    },
+    {
+      "text": "i'd like to wash a dress made out of linen",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 37,
+          "endPos": 41
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 19,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "begin wash",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "can i get washing instructions",
+      "intent": "howtocare",
+      "entities": []
+    },
+    {
+      "text": "can i get a washing guide on silk dress",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 29,
+          "endPos": 32
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 34,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "what should i use for baby clothes?",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 22,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "recommend me a detergent for white clothes",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 29,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "what laundry powder should i use for dark jeans",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 37,
+          "endPos": 46
+        }
+      ]
+    },
+    {
+      "text": "what do i use for bright coloured shirt",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 25,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "detergent for shirt",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 14,
+          "endPos": 18
+        }
+      ]
+    },
+    {
+      "text": "what would you recommend for tough stains?",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 35,
+          "endPos": 40
+        }
+      ]
+    },
+    {
+      "text": "what should i use for tough dirt",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 28,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "tough stain removal",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 6,
+          "endPos": 10
+        }
+      ]
+    },
+    {
+      "text": "i need recommendations for detergents",
+      "intent": "recommend",
+      "entities": []
+    },
+    {
+      "text": "what should i use on cotton",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 21,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "what should i be using on cotton",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 26,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "how should i wash my shirt",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 21,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "how should i wash pants",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 18,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "how do i wash my towel",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 17,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "what about cotton?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 11,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "how about baby clothes?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 10,
+          "endPos": 13
+        }
+      ]
+    },
+    {
+      "text": "what about denim shorts?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 11,
+          "endPos": 15
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 17,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "and what about a cotton tshirt",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 17,
+          "endPos": 22
+        },
+        {
+          "entity": "clothing::type",
+          "startPos": 24,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "what about silk?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 11,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "and for silk?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 8,
+          "endPos": 11
+        }
+      ]
+    },
+    {
+      "text": "and for dresses?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 8,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "kemarin shy lights",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "smile avril lavigne lyrics",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "is jay z atheueat",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "why do with teen cut off i was",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "tips on how to sell phone insurance",
+      "intent": "None",
+      "entities": []
+    },
+    {
+      "text": "should i wash my clothes now?",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "do you have anything for hard stains?",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 30,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "should i do my laundry today?",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "should i wash stuff today",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "how should i separate my clothes?",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "division of clothes",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "how should i be separating my clothes out?",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "what groups should i assign my clothes to",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "tell me how i should split my laundry",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "how should i do my laundry",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "how should i wash my stuff",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "how the heck should i be washing denim",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 33,
+          "endPos": 37
+        }
+      ]
+    },
+    {
+      "text": "i want to start doing laundry",
+      "intent": "startwashing",
+      "entities": []
+    },
+    {
+      "text": "just did a regular cold cycle",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 19,
+          "endPos": 22
+        },
+        {
+          "entity": "washing::setting",
+          "startPos": 11,
+          "endPos": 17
+        }
+      ]
+    },
+    {
+      "text": "washed clothes on warm",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 18,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "just did warm cycle",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 9,
+          "endPos": 12
+        }
+      ]
+    },
+    {
+      "text": "completed cold cycle",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 10,
+          "endPos": 13
+        }
+      ]
+    },
+    {
+      "text": "washed load on hot",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 15,
+          "endPos": 17
+        }
+      ]
+    },
+    {
+      "text": "washed warm",
+      "intent": "didwashing",
+      "entities": [
+        {
+          "entity": "washing::temp",
+          "startPos": 7,
+          "endPos": 10
+        }
+      ]
+    },
+    {
+      "text": "i just did my washing",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "did washing",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "washed a load",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "heyyy i just washed my clothes",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "done laundry",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "finished laundry",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "finish washing",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "finish wash",
+      "intent": "didwashing",
+      "entities": []
+    },
+    {
+      "text": "is it gonna be sunny outside",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "will it rain later in the afternoon",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "raining today?",
+      "intent": "checkweather",
+      "entities": []
+    },
+    {
+      "text": "what about for colourful clothings?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 15,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "how do i separate my laundry",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "how do i split my clothes up",
+      "intent": "separation",
+      "entities": []
+    },
+    {
+      "text": "what about for coloured clothes?",
+      "intent": "whatabout",
+      "entities": [
+        {
+          "entity": "clothing::type",
+          "startPos": 15,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "what product should i use for silk?",
+      "intent": "recommend",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 30,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "how do you wash cotton?",
+      "intent": "howtocare",
+      "entities": [
+        {
+          "entity": "clothing::material",
+          "startPos": 16,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "free wi fi nevada",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 0,
+          "endPos": 9
+        },
+        {
+          "entity": "RestaurantReservation.Address",
+          "startPos": 11,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "Eastside family friendly restaurants",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Atmosphere",
+          "startPos": 9,
+          "endPos": 23
+        },
+        {
+          "entity": "RestaurantReservation.PlaceType",
+          "startPos": 25,
+          "endPos": 35
+        },
+        {
+          "entity": "RestaurantReservation.Address",
+          "startPos": 0,
+          "endPos": 7
+        }
+      ]
+    },
+    {
+      "text": "find local barbecue delivery",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 20,
+          "endPos": 27
+        },
+        {
+          "entity": "RestaurantReservation.Cuisine",
+          "startPos": 11,
+          "endPos": 18
+        }
+      ]
+    },
+    {
+      "text": "Find Gator ' s happy hour menu",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 15,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "find me delivery that is open now",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 8,
+          "endPos": 15
+        }
+      ]
+    },
+    {
+      "text": "food places that deliver near me",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 17,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "find sushi takeout near Sharon ' s house",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Amenities",
+          "startPos": 11,
+          "endPos": 17
+        },
+        {
+          "entity": "RestaurantReservation.Cuisine",
+          "startPos": 5,
+          "endPos": 9
+        }
+      ]
+    },
+    {
+      "text": "call brady medical center",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.PlaceName",
+          "startPos": 5,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "the best drugstore matte foundation for oily skin please",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.Rating",
+          "startPos": 4,
+          "endPos": 7
+        },
+        {
+          "entity": "RestaurantReservation.PlaceType",
+          "startPos": 9,
+          "endPos": 17
+        }
+      ]
+    },
+    {
+      "text": "what about restaurant number two",
+      "intent": "None",
+      "entities": [
+        {
+          "entity": "RestaurantReservation.PlaceType",
+          "startPos": 11,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "separate clothes pls",
+      "intent": "separation",
+      "entities": []
+    }
+  ]
+}
